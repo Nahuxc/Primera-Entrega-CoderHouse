@@ -1,11 +1,11 @@
 [
     {
         "id": 1,
-        "title": "nike air",
-        "description": "nike air blancas limit",
-        "price": 1800,
-        "stock": 10,
-        "img": "imagen"
+        "title": "jordan red ",
+        "description": "jordan limit",
+        "img": "img",
+        "price": 5000,
+        "stock": 19
     },
     {
         "id": 2,
@@ -62,29 +62,5 @@
         "price": 1300,
         "stock": 3,
         "img": "imagen"
-    },
-    {
-        "id": 9,
-        "title": "nike pain",
-        "description": "nike pain limit",
-        "price": 1300,
-        "stock": 3,
-        "img": "imagen"
-    },
-    {
-        "id": 10,
-        "title": "nike run",
-        "description": "nike run limit",
-        "price": 1300,
-        "stock": 3,
-        "img": "imagen"
-    },
-    {
-        "id": 11,
-        "title": "nike clampooo",
-        "description": "nike clampo limit",
-        "price": 1800,
-        "img": "img",
-        "stock": 8
     }
 ]

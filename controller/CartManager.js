@@ -1,10 +1,12 @@
 const fs = require('fs');
 const path = require('path')
 const filepath = path.resolve(__dirname, "../database/cart.json")
+const { ProductManager } = require("../controller/ProductManager")
 
 class Contenedor {
     constructor(path) {
         this.path = path;
+        
     }
 
     async validateExistFile() {
@@ -29,10 +31,9 @@ class Contenedor {
 
     async exists(id) {
         const data = await this.getAllProdInCart()
-        const indice = data.findIndex(product => product.id == id)
-        return indice >= 0;
+        const prod = data.find(product => product.productoCart.id == id)
+        return prod
     }
-
 
     async getAllProdInCart() {
         try {
@@ -43,61 +44,26 @@ class Contenedor {
             console.log('Error al obtener todos los datos del carrito');
         }
     }
-    async addProdInCart(cartId, prodId) {
+
+    async addProdInCart(prodId) {
         try {
-            const carts = await this.getAllProdInCart();
-            const index = carts.findIndex((cart) => cart.id === cartId);
-            carts[index].products.push(prodId);
-            await this.writeProducts(carts);
+            const data = await this.readFileFn()
+
+            const productos = await ProductManager.getProducts()
+            const productoId = productos.findIndex(producto => producto.id == prodId)
+            const prod = productos[productoId]
+            const prodCart = prod
+
+
+            data.push(prodCart)
+
+            await this.writeProducts(data)
 
             return 'Producto agregado!';
         } catch (err) {
             throw new Error("No se pudo agregar el producto al carrito", err)
         }
     }
-    async getCartById(id) {
-        try {
-            const data = await this.readFileFn()
-            const idProducto = data.find((producto) => producto.id === id);
-
-            if (!idProducto) throw new Error("El carrito buscado no existe!");
-
-            return idProducto;
-
-        } catch (err) {
-            throw new Error("El carrito no existe", err)
-        }
-    }
-    async saveCart(element) {
-        try {
-            const data = await this.getAllProdInCart();
-            let id = 1;
-
-            if (data.length) {
-                //Si tengo elementos en mi array
-                id = data[data.length - 1].id + 1;
-            }
-
-            const cart = {
-                id: id,
-                products: [element]
-            };
-
-            data.push(cart);
-
-            await this.writeProducts(data)
-            console.log(`Nuevo carrito guardado, N° ID: ${cart.id}`);
-
-            return cart.id;
-
-        } catch (err) {
-            throw new Error("No se pudo guardar el carrito", err)
-        }
-
-    }
-
-    
-
 }
 
 const instanciaCartApi = new Contenedor(filepath)

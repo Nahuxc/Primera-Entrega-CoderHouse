@@ -47,6 +47,9 @@ class ProductManager{
             id = data[data.length - 1].id + 1;
         }
 
+        if(!element.title || !element.price || !element.description || !element.img || !element.stock){
+            return console.log("no se pudo crear el producto");
+        }
 
         const nuevoProducto = {
             id: id,
@@ -60,9 +63,9 @@ class ProductManager{
         data.push(nuevoProducto);
 
         await this.writeProducts(data)
-        console.log(`Nuevo producto guardado, N° ID: ${nuevoProducto.id}`);
+        
+        return nuevoProducto.id
 
-        return nuevoProducto.id;
     }
     async updateProduct(id, updateProduct) {
         const exist = await this.exists(id);
@@ -102,6 +105,7 @@ class ProductManager{
         await this.writeProducts(data)
 
     }
+
 }
 
 

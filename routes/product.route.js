@@ -20,7 +20,7 @@ routerProduct.get("/:pid", async(req, res)=>{
     if(product){
         res.status(200).json(product)
     }else{
-        res.status(400).json({mensaje: "product not found"})
+        res.status(404).json({mensaje: "product not found"})
     }
 })
 
@@ -28,10 +28,13 @@ routerProduct.post('/', async (req, res) => {
     try {
         const dato = req.body
         let response = await ProductManager.save(dato)
-
-        res.status(200).json({ msg: `Nuevo producto guardado ID: ${response}`})
+        if(response == undefined){
+            res.status(404).json({ msg: `No se creo su Producto`})
+        }else{
+            res.status(200).json({ msg: `Nuevo producto guardado ID: ${response}`})
+        }
     } catch (error) {
-        res.status(400).json(error)
+        res.status(404).json(error)
     }
 });
 
@@ -45,15 +48,15 @@ routerProduct.post('/', async (req, res) => {
         "img": ""
 */
 routerProduct.put("/:pid", async(req, res) =>{
-    const {pid} = req.params
-    const body = req.body
     try {
+        const {pid} = req.params
+        const body = req.body
         let data = await ProductManager.updateProduct(pid, body)
 
         res.status(200).json(data);
 
     } catch (err) {
-        res.status(400).json(err);
+        res.status(404).json(err);
     }
 })
 
@@ -65,7 +68,7 @@ routerProduct.delete("/:pid", async(req, res)=>{
         res.status(200).json({ message: 'Producto eliminado' })
 
     } catch (err) {
-        res.status(400).json(err)
+        res.status(404).json(err)
     }
 
 })

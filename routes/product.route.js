@@ -1,7 +1,9 @@
 const express = require("express");
 const routerProduct = express.Router();
+const {uploader} = require("../utils/uploader")
 const {ProductManager} = require("../controller/ProductManager")
 
+/* ver todos los productos */
 routerProduct.get("/", async(req, res)=>{
     const product = await ProductManager.getProducts()
     const {limit} = req.query
@@ -13,6 +15,7 @@ routerProduct.get("/", async(req, res)=>{
     }
 })
 
+/* ver los productos por ID */
 routerProduct.get("/:pid", async(req, res)=>{
     const products =  await ProductManager.getProducts()
     const {pid} = req.params
@@ -24,14 +27,17 @@ routerProduct.get("/:pid", async(req, res)=>{
     }
 })
 
-routerProduct.post('/', async (req, res) => {
+/* crear producto con imagen */
+routerProduct.post('/',uploader.single("img"), async (req, res) => {
     try {
-        const dato = req.body
-        let response = await ProductManager.save(dato)
-        if(response == undefined){
-            res.status(404).json({ msg: `No se creo su Producto`})
+        const producto = req.body
+        const file = req.file?.filename
+        const productoFile = {...producto, img: file}
+        const añadir = await ProductManager.save(productoFile)
+        if(añadir == undefined){
+            res.status(404).json({msg: `no se pudo crear su producto, complete todos los campos`})
         }else{
-            res.status(200).json({ msg: `Nuevo producto guardado ID: ${response}`})
+            res.status(200).json({msg: `producto creado con su id ${añadir}`})
         }
     } catch (error) {
         res.status(404).json(error)
@@ -39,6 +45,7 @@ routerProduct.post('/', async (req, res) => {
 });
 
 
+/* actualizar producto */
 /* deberas crear tu producto por postman y enviarlo, con los datos que pida:
         "id": 1,
         "title": "",
@@ -60,6 +67,7 @@ routerProduct.put("/:pid", async(req, res) =>{
     }
 })
 
+/* eliminar producto */
 routerProduct.delete("/:pid", async(req, res)=>{
     try {
         const {pid} = req.params

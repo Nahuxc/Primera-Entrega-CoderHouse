@@ -62,5 +62,13 @@
         "price": 1300,
         "stock": 3,
         "img": "imagen"
+    },
+    {
+        "id": 9,
+        "title": "jordan red ",
+        "description": "jordan limit",
+        "img": "img",
+        "price": 5000,
+        "stock": 19
     }
 ]

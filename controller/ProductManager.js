@@ -37,7 +37,7 @@ class ProductManager{
             console.log(error);
         }
     }
-    async save(element) {
+    async save(producto) {
 
         const data = await this.readFileFn();
         let id = 1;
@@ -47,17 +47,19 @@ class ProductManager{
             id = data[data.length - 1].id + 1;
         }
 
-        if(!element.title || !element.price || !element.description || !element.img || !element.stock){
+        if(!producto.title || !producto.price || !producto.description || !producto.img || !producto.stock){
             return console.log("no se pudo crear el producto");
         }
 
         const nuevoProducto = {
-            id: id,
-            title: element.title,
-            description: element.description,
-            img: element.img,
-            price: parseInt(element.price),
-            stock: parseInt(element.stock)
+            id,
+            title: producto.title,
+            description: producto.description,
+            price: producto.price,
+            stock: producto.stock,
+            img: producto.img
+
+
         };
 
         data.push(nuevoProducto);

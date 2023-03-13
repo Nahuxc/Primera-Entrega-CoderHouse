@@ -28,7 +28,7 @@ routerProduct.get("/:pid", async(req, res)=>{
 })
 
 /* crear producto con imagen */
-routerProduct.post('/',uploader.single("img"), async (req, res) => {
+routerProduct.post('/',uploader.array("img"), async (req, res) => {
     try {
         const producto = req.body
         const file = req.file?.filename
